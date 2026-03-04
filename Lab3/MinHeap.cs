@@ -2,68 +2,13 @@
 
 namespace Lab3;
 
-public class MinHeap<T> where T : IComparable<T>
+// public class MinHeap<T> where T : IComparable<T>
+public class MinHeap<T> : Heap<T> where T : IComparable<T>
 {
-    private T[] array;
-    private const int initialSize = 8;
-
-    public int Count { get; private set; }
-
-    public int Capacity => array.Length;
-
-    public bool IsEmpty => Count == 0;
+    public MinHeap(T[] initialArray = null) : base(initialArray){}
 
 
-    public MinHeap(T[] initialArray = null)
-    {
-        array = new T[initialSize];
-
-        if (initialArray == null)
-        {
-            return;
-        }
-
-        foreach (var item in initialArray)
-        {
-            Add(item);
-        }
-
-    }
-
-    /// <summary>
-    /// Returns the min item but does NOT remove it.
-    /// Time complexity: O( 1 )
-    /// </summary>
-    public T Peek()
-    {
-        if (IsEmpty)
-        {
-            throw new InvalidOperationException();
-        }
-        return array[0];
-    }
-
-    // TODO
-    /// <summary>
-    /// Adds given item to the heap.
-    /// Time complexity: O(log(n)) ***BUT*** it might be O(N) if we have to resize
-    /// </summary>
-    public void Add(T item)
-    {
-        array[Count] = item;
-        Count++;
-
-        TrickleUp(Count);
-
-        if (Count == Capacity)
-        {
-            DoubleArrayCapacity();
-        }
-
-
-    }
-
-    public T Extract()
+    public override T Extract()
     {
         return ExtractMin();
     }
@@ -72,7 +17,7 @@ public class MinHeap<T> where T : IComparable<T>
     /// Removes and returns the max item in the min-heap.
     /// Time complexity: O( ? )
     /// </summary>
-    public T ExtractMax()
+    public override T ExtractMax()
     {
         if (IsEmpty)
         {
@@ -97,7 +42,7 @@ public class MinHeap<T> where T : IComparable<T>
     /// Removes and returns the min item in the min-heap.
     /// Time complexity: O( log(n) )
     /// </summary>
-    public T ExtractMin()
+    public override T ExtractMin()
     {
         if (IsEmpty)
         {
@@ -111,28 +56,12 @@ public class MinHeap<T> where T : IComparable<T>
         return minValue;
     }
 
-    /// <summary>
-    /// Returns true if the heap contains the given value; otherwise false.
-    /// Time complexity: O( n )
-    /// </summary>
-    public bool Contains(T value)
-    {
-        for (int i = 0; i < Count; i++)
-        {
-            if (array[i].CompareTo(value) == 0)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     // TODO
     /// <summary>
     /// Updates the first element with the given value from the heap.
     /// Time complexity: O( n )
     /// </summary>
-    public void Update(T oldValue, T newValue)
+    public override void Update(T oldValue, T newValue)
     {
         // find the node to update - O(n)
 
@@ -160,8 +89,6 @@ public class MinHeap<T> where T : IComparable<T>
             return;
         }
 
-
-
     }
 
     /// <summary>
@@ -172,14 +99,17 @@ public class MinHeap<T> where T : IComparable<T>
         int leftChildIndex = LeftChild(index);
         int rightChildIndex = RightChild(index);
 
-        if (leftChildIndex >= Count && rightChildIndex >= Count) //given node was a leaf
+
+        // case 1: the node has no children
+        if (leftChildIndex >= Count && rightChildIndex >= Count)
         {
             return null;
         }
 
-        if (leftChildIndex < Count && rightChildIndex < Count) //given node has two children
+        // case 2: the node has two valid children
+        if (leftChildIndex < Count && rightChildIndex < Count)
         {
-            int smaller_index = 0;
+            int smaller_index;
             // set smaller_index to the index of the smaller child
             if (array[leftChildIndex].CompareTo(array[rightChildIndex]) < 0) //left child smaller than right
             {
@@ -190,21 +120,21 @@ public class MinHeap<T> where T : IComparable<T>
                 smaller_index = rightChildIndex;
             }
 
-            if (array[smaller_index].CompareTo(array[index]) < 0) //smaller of the two children is smaller than parent
+            //now that smaller_index is the smaller of the two children, compare do the parent
+            if (array[smaller_index].CompareTo(array[index]) < 0) // smaller than parent
             {
                 return smaller_index;
             }
             return null;
         }
-        {
-            
-        }
 
-        if (leftChildIndex < Count && array[leftChildIndex].CompareTo(array[index]) < 0) //left child exists and is smaller than parent
+        // case 3: only left is valid child
+        if (leftChildIndex < Count && array[leftChildIndex].CompareTo(array[index]) < 0) //left child smaller than parent
         {
             return leftChildIndex;
         }
 
+        // case 4: only right is valid child
         if (rightChildIndex < Count && array[rightChildIndex].CompareTo(array[index]) < 0) //right child exists and is smaller than parent
         {
             return rightChildIndex;
@@ -214,48 +144,8 @@ public class MinHeap<T> where T : IComparable<T>
 
     }
 
-    private int? GetIndexOfValue(T value)
-    {
-
-        for (int i = 0; i < Count; i++)
-        {
-            if (array[i].CompareTo(value) == 0)
-            {
-                return i;
-            }
-        }
-
-        return null;
-    }
-
-    // TODO
-    /// <summary>
-    /// Removes the first element with the given value from the heap.
-    /// Time complexity: O( n )
-    /// </summary>
-    public void Remove(T value)
-    {
-        // find the node to remove
-        int? index_to_remove = GetIndexOfValue(value);
-
-        if (index_to_remove == null)
-        {
-            throw new InvalidOperationException();
-        }
-
-        // swap with last
-        Swap(Count, (int)index_to_remove);
-
-        // trickleX
-        TrickleDown((int)index_to_remove); //trickle down last value now at removed index
-
-        Count--;
-
-    }
-
-    // TODO
     // Time Complexity: O( log n )
-    private void TrickleUp(int index)
+    protected override void TrickleUp(int index)
     {
         int follow_index = index;
         if (follow_index == 0)
@@ -267,14 +157,12 @@ public class MinHeap<T> where T : IComparable<T>
         {
             Swap(follow_index, Parent(follow_index)); //swap parent and child values, set new index to swapped index
             follow_index = Parent(follow_index);
-            
         }
 
     }
 
-    // TODO
     // Time Complexity: O( log n )
-    private void TrickleDown(int index)
+    protected override void TrickleDown(int index)
     {
         int? smaller_child = GetSmallerOfChildren(index);
 
@@ -288,43 +176,4 @@ public class MinHeap<T> where T : IComparable<T>
 
     }
 
-    // TODO
-    /// <summary>
-    /// Gives the position of a node's parent, the node's position in the heap.
-    /// </summary>
-    private static int Parent(int position)
-    {
-        return (position - 1) / 2;
-    }
-
-    // TODO
-    /// <summary>
-    /// Returns the position of a node's left child, given the node's position.
-    /// </summary>
-    private static int LeftChild(int position)
-    {
-        return 2 * position + 1;
-    }
-
-    // TODO
-    /// <summary>
-    /// Returns the position of a node's right child, given the node's position.
-    /// </summary>
-    private static int RightChild(int position)
-    {
-        return 2 * position + 2;
-    }
-
-    private void Swap(int index1, int index2)
-    {
-        var temp = array[index1];
-
-        array[index1] = array[index2];
-        array[index2] = temp;
-    }
-
-    private void DoubleArrayCapacity()
-    {
-        Array.Resize(ref array, array.Length * 2);
-    }
 }
