@@ -4,6 +4,8 @@ namespace Lab3;
 
 public class MaxHeap<T> : Heap<T> where T : IComparable<T>
 {
+
+    public MaxHeap(T[] initialArray = null) : base(initialArray){}
     public override T Extract()
     {
         throw new NotImplementedException();

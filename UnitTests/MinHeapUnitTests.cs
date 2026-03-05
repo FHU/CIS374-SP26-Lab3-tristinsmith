@@ -49,9 +49,9 @@ namespace UnitTests
             Assert.AreEqual(1, heap1.Count);
             Assert.AreEqual(4, heap1.ExtractMin());
             Assert.AreEqual(0, heap1.Count);
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMin());
+            Assert.Throws<Exception>(() => heap1.ExtractMin());
             Assert.AreEqual(0, heap1.Count);
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMin());
+            Assert.Throws<Exception>(() => heap1.ExtractMin());
             Assert.AreEqual(0, heap1.Count);
 
         }
@@ -72,8 +72,8 @@ namespace UnitTests
             Assert.AreEqual(2, heap1.ExtractMin());
             Assert.AreEqual(3, heap1.ExtractMin());
             Assert.AreEqual(4, heap1.ExtractMin());
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMin());
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMin());
+            Assert.Throws<Exception>(() => heap1.ExtractMin());
+            Assert.Throws<Exception>(() => heap1.ExtractMin());
 
         }
 
@@ -93,7 +93,7 @@ namespace UnitTests
             Assert.AreEqual("dallas", heap1.ExtractMin());
             Assert.AreEqual("kaden", heap1.ExtractMin());
             Assert.AreEqual("kenan", heap1.ExtractMin());
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMin());
+            Assert.Throws<Exception>(() => heap1.ExtractMin());
 
         }
 
@@ -329,7 +329,7 @@ namespace UnitTests
             Assert.AreEqual(0, heap0.Count);
             Assert.IsFalse(heap0.Contains(90));
 
-            Assert.ThrowsException<Exception>(() => heap0.Remove(0));
+            Assert.Throws<Exception>(() => heap0.Remove(0));
 
         }
 
@@ -364,7 +364,7 @@ namespace UnitTests
             Assert.IsTrue(heap0.Contains(50));
             Assert.AreEqual(50, heap0.Peek());
 
-            Assert.ThrowsException<Exception>(() => heap0.Update(0, 10));
+            Assert.Throws<Exception>(() => heap0.Update(0, 10));
 
         }
 
@@ -373,8 +373,8 @@ namespace UnitTests
         {
             MinHeap<int> heap0 = new MinHeap<int>();
 
-            Assert.ThrowsException<Exception>(() => heap0.Update(0, 10));
-            Assert.ThrowsException<Exception>(() => heap0.Remove(0));
+            Assert.Throws<Exception>(() => heap0.Update(0, 10));
+            Assert.Throws<Exception>(() => heap0.Remove(0));
 
         }
     }

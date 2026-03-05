@@ -67,9 +67,10 @@ public class MinHeap<T> : Heap<T> where T : IComparable<T>
 
         int? node_location = GetIndexOfValue(oldValue);
 
+
         if (node_location == null)
         {
-            return;   
+            throw new InvalidOperationException(); 
         }
 
         // update value - O(1)
@@ -147,30 +148,42 @@ public class MinHeap<T> : Heap<T> where T : IComparable<T>
     // Time Complexity: O( log n )
     protected override void TrickleUp(int index)
     {
+        // System.Console.WriteLine($"Trickle up called with index {index} on value {array[index]}");
         int follow_index = index;
-        if (follow_index == 0)
+        if (follow_index == 0 || follow_index > Count)
         {
+            // System.Console.WriteLine("Index was 0 or larger than count");
             return;
         }
 
-        while (array[follow_index].CompareTo(array[Parent(follow_index)]) < 0) //current value less than parent value
+        //check if parent exists and is bigger
+        while (array[follow_index].CompareTo(array[Parent(follow_index)]) < 0 && follow_index > 0)
         {
+            // System.Console.WriteLine($"Swapping {array[follow_index]} and {array[Parent(follow_index)]}");
             Swap(follow_index, Parent(follow_index)); //swap parent and child values, set new index to swapped index
             follow_index = Parent(follow_index);
         }
+        // System.Console.WriteLine($"{array[follow_index]} was bigger than {array[Parent(follow_index)]}");
+        // System.Console.WriteLine($"New min is: {Peek()}");
+
 
     }
 
     // Time Complexity: O( log n )
     protected override void TrickleDown(int index)
     {
+        // System.Console.WriteLine($"Trickle down called on index {index} with value {array[index]}");
         int? smaller_child = GetSmallerOfChildren(index);
 
         if (smaller_child == null)
         {
+            // System.Console.WriteLine("Smaller child was null, cancelling");
             return;
         }
 
+        // System.Console.WriteLine($"Smaller child found with index {index} and value {array[smaller_child ?? 0]}");
+
+        // System.Console.WriteLine("Swapping");
         Swap(index, (int)smaller_child); 
         TrickleDown((int)smaller_child);
 

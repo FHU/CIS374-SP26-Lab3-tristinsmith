@@ -43,9 +43,9 @@ namespace UnitTests
             Assert.AreEqual(1, heap1.Count);
             Assert.AreEqual(0, heap1.ExtractMax());
             Assert.AreEqual(0, heap1.Count);
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMax());
+            Assert.Throws<Exception>(() => heap1.ExtractMax());
             Assert.AreEqual(0, heap1.Count);
-            Assert.ThrowsException<Exception>(() => heap1.ExtractMax());
+            Assert.Throws<Exception>(() => heap1.ExtractMax());
             Assert.AreEqual(0, heap1.Count);
 
         }
@@ -56,8 +56,8 @@ namespace UnitTests
         {
             MaxHeap<int> heap0 = new MaxHeap<int>();
 
-            Assert.ThrowsException<Exception>(() => heap0.Update(0, 10));
-            Assert.ThrowsException<Exception>(() => heap0.Remove(0));
+            Assert.Throws<Exception>(() => heap0.Update(0, 10));
+            Assert.Throws<Exception>(() => heap0.Remove(0));
 
         }
     }
