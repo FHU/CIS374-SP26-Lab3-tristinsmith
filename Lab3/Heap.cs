@@ -45,7 +45,7 @@ public abstract class Heap<T> where T : IComparable<T>
             DoubleArrayCapacity();
         }
 
-        System.Console.WriteLine($"Adding {item}");
+
         array[Count] = item;
         TrickleUp(Count);
         Count++;
@@ -58,7 +58,6 @@ public abstract class Heap<T> where T : IComparable<T>
     public void Remove(T value)
     {
         // find the node to remove
-        System.Console.WriteLine($"Removing {value}");
         int? index_to_remove = GetIndexOfValue(value);
 
 
@@ -68,7 +67,7 @@ public abstract class Heap<T> where T : IComparable<T>
         }
 
         // swap with last
-        System.Console.WriteLine($"Swapping {array[index_to_remove ?? 0]} with {array[Count-1]}");
+
         Swap(Count - 1, (int)index_to_remove);
 
         Count--;
