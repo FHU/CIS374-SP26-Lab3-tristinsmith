@@ -15,7 +15,7 @@ public class MinHeap<T> : Heap<T> where T : IComparable<T>
 
     /// <summary>
     /// Removes and returns the max item in the min-heap.
-    /// Time complexity: O( ? )
+    /// Time complexity: O( n )
     /// </summary>
     public override T ExtractMax()
     {
